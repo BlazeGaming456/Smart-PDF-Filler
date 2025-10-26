@@ -6,6 +6,7 @@ import { useState } from 'react'
 export default function page () {
   const [file, setFile] = useState(null)
   const [message, setMessage] = useState('')
+  const [name, setName] = useState('')
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -19,7 +20,7 @@ export default function page () {
     try {
       const formData = new FormData()
       formData.append('pdf', file)
-      formData.append('name', 'Ajin')
+      formData.append('name', name)
 
       const res = await fetch('/api/fill-pdf', {
         method: 'POST',
@@ -67,7 +68,6 @@ export default function page () {
             id='pdf-upload'
             onChange={(e) => {
               setFile(e.target.files[0])
-              handleSubmit(e);
             }}
             className='hidden'
           />
@@ -86,6 +86,28 @@ export default function page () {
             </p>
           )}
         </form>
+
+        {/* Name input field */}
+        {file && (
+          <div className='mt-6'>
+            <label className='block text-sm font-medium text-gray-700 mb-2'>
+              Enter your name:
+            </label>
+            <input
+              type='text'
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder='Enter your name here...'
+              className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200'
+            />
+            <button
+              onClick={handleSubmit}
+              className='mt-4 w-full bg-green-500 text-white py-3 px-6 rounded-lg hover:bg-green-600 transition-all duration-200 font-semibold'
+            >
+              Fill PDF with Name
+            </button>
+          </div>
+        )}
 
         {message && (
           <div
